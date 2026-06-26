@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+        cache-dependency-path: |
+          server/package-lock.json
+          client/package-lock.json
+
+    - name: Install Shared Dependencies
+      working-directory: ./shared
+      run: npm install
+
+    - name: Install Server Dependencies
+      working-directory: ./server
+      run: npm ci
+
+    - name: Install Client Dependencies
+      working-directory: ./client
+      run: npm ci
+
+    - name: Lint Server
+      working-directory: ./server
+      run: npm run lint
+
+    - name: Lint Client
+      working-directory: ./client
+      run: npm run lint
+
+    - name: Test Server
+      working-directory: ./server
+      run: npm run test
+
+    - name: Build Server
+      working-directory: ./server
+      run: npm run build
+
+    - name: Build Client
+      working-directory: ./client
+      run: npm run build

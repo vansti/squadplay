@@ -1,0 +1,268 @@
+@import 'tailwindcss';
+
+/* ─── SquadPlay Design System ──────────────────────────── */
+
+@theme {
+  /* Brand Colors */
+  --color-brand-50: oklch(0.97 0.02 280);
+  --color-brand-100: oklch(0.93 0.04 280);
+  --color-brand-200: oklch(0.87 0.08 280);
+  --color-brand-300: oklch(0.78 0.12 280);
+  --color-brand-400: oklch(0.68 0.17 275);
+  --color-brand-500: oklch(0.58 0.22 270);
+  --color-brand-600: oklch(0.5 0.22 270);
+  --color-brand-700: oklch(0.42 0.19 270);
+  --color-brand-800: oklch(0.35 0.15 270);
+  --color-brand-900: oklch(0.28 0.1 270);
+
+  /* Accent - Electric Cyan */
+  --color-accent-400: oklch(0.78 0.15 195);
+  --color-accent-500: oklch(0.68 0.18 195);
+  --color-accent-600: oklch(0.58 0.18 195);
+
+  /* Success - Emerald */
+  --color-success-500: oklch(0.65 0.18 155);
+  --color-success-600: oklch(0.55 0.18 155);
+
+  /* Danger - Rose */
+  --color-danger-500: oklch(0.62 0.2 15);
+  --color-danger-600: oklch(0.52 0.2 15);
+
+  /* Warning - Amber */
+  --color-warning-500: oklch(0.75 0.15 75);
+  --color-warning-600: oklch(0.65 0.15 75);
+
+  /* Surface colors (dark theme) */
+  --color-surface-900: oklch(0.13 0.01 270);
+  --color-surface-800: oklch(0.17 0.015 270);
+  --color-surface-700: oklch(0.22 0.02 270);
+  --color-surface-600: oklch(0.28 0.02 270);
+
+  /* Text */
+  --color-text-primary: oklch(0.95 0.01 270);
+  --color-text-secondary: oklch(0.7 0.02 270);
+  --color-text-muted: oklch(0.5 0.02 270);
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ─── Base Styles ──────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-surface-900);
+  color: var(--color-text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Glass Card ───────────────────────────────────────── */
+
+.glass-card {
+  background: oklch(0.17 0.015 270 / 0.6);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid oklch(0.3 0.02 270 / 0.4);
+  border-radius: var(--radius-lg);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  background: oklch(0.2 0.02 270 / 0.7);
+  border-color: oklch(0.4 0.03 270 / 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+}
+
+/* ─── Gradient Text ────────────────────────────────────── */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-brand-400), var(--color-accent-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Gradient Button ──────────────────────────────────── */
+
+.btn-gradient {
+  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-brand-400), var(--color-accent-500));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-gradient:hover::before {
+  opacity: 1;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px oklch(0.58 0.22 270 / 0.4);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-gradient span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Animated Background ─────────────────────────────── */
+
+.bg-animated {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bg-animated::before,
+.bg-animated::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+
+.bg-animated::before {
+  width: 600px;
+  height: 600px;
+  background: var(--color-brand-500);
+  top: -200px;
+  right: -100px;
+}
+
+.bg-animated::after {
+  width: 500px;
+  height: 500px;
+  background: var(--color-accent-500);
+  bottom: -150px;
+  left: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(30px, -30px) rotate(5deg);
+  }
+  50% {
+    transform: translate(-20px, 20px) rotate(-3deg);
+  }
+  75% {
+    transform: translate(20px, 10px) rotate(3deg);
+  }
+}
+
+/* ─── Room Code Input ──────────────────────────────────── */
+
+.room-code-input {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  text-align: center;
+  background: var(--color-surface-800);
+  border: 2px solid var(--color-surface-600);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  padding: 1rem;
+  width: 100%;
+  max-width: 320px;
+  transition: border-color 0.3s ease;
+}
+
+.room-code-input:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px oklch(0.58 0.22 270 / 0.2);
+}
+
+/* ─── Player Avatar ────────────────────────────────────── */
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* ─── Pulse Animation ──────────────────────────────────── */
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.58 0.22 270 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px oklch(0.58 0.22 270 / 0);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── Responsive Helpers ───────────────────────────────── */
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}

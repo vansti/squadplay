@@ -1,0 +1,60 @@
+services:
+  # ─── PostgreSQL Database ───────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-squadplay}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-squadplay_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-squadplay}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./server/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U squadplay"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ─── Node.js Backend ───────────────────────────────────
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://${POSTGRES_USER:-squadplay}:${POSTGRES_PASSWORD:-squadplay_dev}@postgres:5432/${POSTGRES_DB:-squadplay}
+      PORT: 3001
+      CLIENT_URL: http://localhost:5173
+      JWT_SECRET: squadplay-dev-secret-change-in-prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── React Frontend (Vite) ────────────────────────────
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:3001
+      VITE_WS_URL: http://localhost:3001
+    depends_on:
+      - server
+    restart: unless-stopped
+
+volumes:
+  pgdata:

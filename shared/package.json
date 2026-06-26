@@ -1,0 +1,9 @@
+{
+  "name": "squadplay-shared",
+  "version": "1.0.0",
+  "description": "Shared types and constants for SquadPlay",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {},
+  "dependencies": {}
+}

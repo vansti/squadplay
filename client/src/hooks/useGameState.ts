@@ -14,7 +14,7 @@ const initialCoreState: CoreState = {
   gameType: 'the-odd-one',
   isConnected: false,
   error: null,
-  roomSettings: { rounds: 1 },
+  roomSettings: { rounds: 1, customTopic: '' },
 };
 
 export const initialGameState: RootState = {
@@ -85,6 +85,7 @@ function coreReducer(state: CoreState, action: CoreAction): CoreState {
         roomSettings: {
           ...state.roomSettings,
           rounds: action.payload.settings.rounds ?? state.roomSettings.rounds,
+          customTopic: action.payload.settings.customTopic !== undefined ? action.payload.settings.customTopic : state.roomSettings.customTopic,
         },
       };
 

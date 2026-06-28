@@ -38,7 +38,7 @@ export interface RoomState {
   hostId: string;
   gameType: string;
   status: 'waiting' | 'in_progress' | 'finished';
-  settings: Record<string, unknown>;
+  settings: { rounds?: number; customTopic?: string; [key: string]: unknown };
   players: RoomPlayer[];
   createdAt: Date;
   game?: GameState;

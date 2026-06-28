@@ -21,3 +21,20 @@ export async function getRandomWordPair(): Promise<WordPair> {
 
   return result.rows[0] as WordPair;
 }
+
+/**
+ * Save an AI-generated word pair to the default pack
+ */
+export async function saveWordPair(wordA: string, wordB: string, category: string): Promise<WordPair> {
+  const result = await query(
+    `INSERT INTO word_pairs (pack_id, word_a, word_b, category) 
+     VALUES (
+       (SELECT id FROM word_packs WHERE name = 'Classic Pack' LIMIT 1), 
+       $1, $2, $3
+     ) 
+     RETURNING id, word_a AS "wordA", word_b AS "wordB", category`,
+    [wordA, wordB, category]
+  );
+
+  return result.rows[0] as WordPair;
+}

@@ -2,7 +2,8 @@ import type { Server as SocketServer } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 import { GameEngine } from '../GameEngine.js';
 import type { RoomState } from '../../store/MemoryStore.js';
-import { getRandomWordPair } from './wordPairService.js';
+import { getRandomWordPair, saveWordPair } from './wordPairService.js';
+import { generateWordPair } from '../../services/aiService.js';
 import { config } from '../../config.js';
 import { query } from '../../models/db.js';
 
@@ -30,8 +31,21 @@ export class OddOneEngine extends GameEngine {
     try {
       console.log(`🎮 OddOneEngine: Starting game in room ${room.roomCode}`);
 
-      // 1. Fetch random word pair
-      const wordPair = await getRandomWordPair();
+      let wordPair;
+      if (room.settings.customTopic && typeof room.settings.customTopic === 'string' && room.settings.customTopic.trim() !== '') {
+        try {
+          console.log(`Generating AI word pair for topic: ${room.settings.customTopic}`);
+          const aiPair = await generateWordPair(room.settings.customTopic);
+          // Assuming AI provides an ID or we don't strictly need one for the game engine if save fails
+          // But saveWordPair returns a complete WordPair object
+          wordPair = await saveWordPair(aiPair.wordA, aiPair.wordB, aiPair.category);
+        } catch (err) {
+          console.error('Failed to generate AI pair, falling back to random DB pair', err);
+          wordPair = await getRandomWordPair();
+        }
+      } else {
+        wordPair = await getRandomWordPair();
+      }
 
       // 2. Select a random player to be The Odd One
       const players = room.players.filter((p) => p.isConnected);

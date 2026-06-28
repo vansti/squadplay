@@ -140,7 +140,7 @@ export function LobbyPage({ state: rootState, onStartGame, onLeaveRoom, onUpdate
         <h3 className="text-lg font-semibold text-text-primary mb-4">⚙️ Game Settings</h3>
 
         {/* Rounds Selector */}
-        <div>
+        <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <label className="text-sm font-medium text-text-secondary">Rounds per Player</label>
             <span className="text-xs text-text-muted">
@@ -168,6 +168,23 @@ export function LobbyPage({ state: rootState, onStartGame, onLeaveRoom, onUpdate
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Custom Topic */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-sm font-medium text-text-secondary">Custom Topic (Optional)</label>
+            <span className="text-xs text-text-muted">AI generated words</span>
+          </div>
+          <input
+            type="text"
+            id="input-custom-topic"
+            placeholder="e.g. 90s Action Movies..."
+            value={state.roomSettings.customTopic || ''}
+            onChange={(e) => state.isHost && onUpdateSettings({ customTopic: e.target.value })}
+            disabled={!state.isHost}
+            className="w-full px-4 py-3 rounded-xl bg-surface-800 border border-surface-600 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          />
         </div>
       </motion.div>
 

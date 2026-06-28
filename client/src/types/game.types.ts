@@ -39,7 +39,7 @@ export interface CoreState {
   gameType: string;
   isConnected: boolean;
   error: string | null;
-  roomSettings: { rounds: number };
+  roomSettings: { rounds: number; customTopic?: string };
 }
 
 import type { OddOneState } from '@/games/OddOne/oddOne.types';
@@ -58,7 +58,7 @@ export type CoreAction =
   | { type: 'ROOM_JOINED'; payload: { roomCode: string; players: Player[] } }
   | { type: 'PLAYER_JOINED'; payload: { player: Player; players: Player[] } }
   | { type: 'PLAYER_LEFT'; payload: { playerId: string; players: Player[]; newHostId?: string } }
-  | { type: 'SETTINGS_UPDATED'; payload: { settings: { rounds?: number } } }
+  | { type: 'SETTINGS_UPDATED'; payload: { settings: { rounds?: number; customTopic?: string } } }
   | { type: 'CONNECTED' }
   | { type: 'DISCONNECTED' }
   | { type: 'ERROR'; payload: { message: string } }
